@@ -1,0 +1,35 @@
+<template>
+    <div class="stage">
+        <video class="feed" autoplay playsinline muted></video>
+        <canvas class="hidden-canvas"></canvas>
+
+        <!-- Guidance overlay / step card -->
+        <div class="overlay">
+            <div class="status-bar">
+                <span class="status-text">{status}</span>
+                <template if:true={isThinking}>
+                    <span class="thinking">● thinking…</span>
+                </template>
+            </div>
+
+            <template if:true={guidance}>
+                <div class="step-card">
+                    <p class="guidance-text">{guidance}</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <template if:false={isLive}>
+                <button class="btn btn-start" onclick={handleStart}>Start</button>
+            </template>
+            <template if:true={isLive}>
+                <button class="btn btn-stop" onclick={handleStop}>Stop</button>
+                <template if:true={listening}>
+                    <span class="mic-dot" title="Listening">🎤</span>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

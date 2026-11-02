@@ -1,0 +1,99 @@
+.stage {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    aspect-ratio: 3 / 4;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.feed {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hidden-canvas {
+    display: none;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
+    padding: 12px;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-size: 0.8rem;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.thinking {
+    color: #6ec1ff;
+    animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+.step-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 72px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.guidance-text {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #16171a;
+}
+
+.controls {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+}
+
+.btn-start {
+    background: #0b8f4e;
+}
+
+.btn-stop {
+    background: #c23934;
+}
+
+.mic-dot {
+    font-size: 1.4rem;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Grants the Einstein Agent User access to the Apex classes backing the Video Troubleshooting Agent (product setup and troubleshooting grounding).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>de Video Troubleshooting Agent Access</label>
+    <classAccesses>
+        <apexClass>de_TroubleshootingGrounding</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>de_GoogleAuthService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+</PermissionSet>

@@ -1,0 +1,35 @@
+{
+  "required" : [ "carName" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "carName" : {
+      "title" : "Car Name",
+      "description" : "The car the prospect is interested in.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "contactName" : {
+      "title" : "Contact Name",
+      "description" : "The prospect's name, if they gave it.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "conversationSummary" : {
+      "title" : "Conversation Summary",
+      "description" : "A short summary of the conversation so far.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "interestSummary" : {
+      "title" : "Interest Summary",
+      "description" : "A one-line summary of what the prospect is interested in or asked to do.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

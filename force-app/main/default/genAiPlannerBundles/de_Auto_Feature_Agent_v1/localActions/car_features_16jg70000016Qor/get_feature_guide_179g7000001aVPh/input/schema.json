@@ -1,0 +1,21 @@
+{
+  "required" : [ "carName" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "carName" : {
+      "title" : "Car Name",
+      "description" : "The name (make/model) of the car to fetch the feature guide for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "feature" : {
+      "title" : "Feature",
+      "description" : "The specific part or feature the user asked about or is pointing the camera at (e.g. 'alloy wheels', 'the touchscreen'). Leave blank for a general overview.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

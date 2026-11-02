@@ -1,0 +1,28 @@
+{
+  "required" : [ "productName" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "conversationSummary" : {
+      "title" : "Conversation Summary",
+      "description" : "A short summary of the troubleshooting steps tried so far.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "issueSummary" : {
+      "title" : "Issue Summary",
+      "description" : "A one-line summary of the problem the customer is facing, in their words.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "productName" : {
+      "title" : "Product Name",
+      "description" : "The product the customer is troubleshooting.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

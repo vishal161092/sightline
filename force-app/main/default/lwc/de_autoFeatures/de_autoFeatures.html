@@ -1,0 +1,223 @@
+<template>
+    <div class="vt-root">
+        <!-- Intro / landing -->
+        <template if:true={isPicker}>
+            <div class="vt-picker">
+                <!-- Centered hero: brand, one-line pitch, how-it-works hints -->
+                <div class="vt-hero">
+                    <div class="vt-orb vt-hero-orb">
+                        <span class="vt-orb-ring"></span>
+                        <span class="vt-orb-ring"></span>
+                        <span class="vt-orb-core"></span>
+                    </div>
+                    <h1 class="vt-hero-title">Velo Live Features</h1>
+                    <p class="vt-hero-sub">
+                        A live video conversation about your Velo Motors vehicle.<br /><br />
+                        Point your camera at any model and just ask.
+                    </p>
+                    <ul class="vt-hero-hints">
+                        <li><span class="vt-hint-ico">📷</span> Aim your camera at the car</li>
+                        <li><span class="vt-hint-ico">🎙️</span> Hold the mic and ask about any feature</li>
+                        <li><span class="vt-hint-ico">🧑‍💼</span> Ask to book a test drive to reach a specialist</li>
+                    </ul>
+                    <p class="vt-hero-foot">I'll see what you see and explain any feature.</p>
+                </div>
+
+                <!-- Pinned bottom Start bar (flex child, so 100dvh keeps it visible) -->
+                <div class="vt-startbar">
+                    <button class="vt-start" onclick={handleStart} disabled={startDisabled}>Start</button>
+                </div>
+            </div>
+        </template>
+
+        <!-- Connecting / progress -->
+        <template if:true={isConnecting}>
+            <div class="vt-connecting">
+                <div class="vt-orb">
+                    <span class="vt-orb-ring"></span>
+                    <span class="vt-orb-ring"></span>
+                    <span class="vt-orb-core"></span>
+                </div>
+                <div class="vt-connecting-title">Starting your session</div>
+                <template if:true={productName}>
+                    <div class="vt-connecting-product">{productName}</div>
+                </template>
+                <div class="vt-connecting-sub">{connectMsg}</div>
+                <div class="vt-dots"><span></span><span></span><span></span></div>
+
+                <!-- Live "what's loaded" checklist — ticks as each step completes -->
+                <ul class="vt-checklist">
+                    <template for:each={checklist} for:item="c">
+                        <li key={c.key} class={c.cls}>
+                            <span class="vt-check-box">{c.icon}</span>
+                            <span class="vt-check-label">{c.label}</span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+        <!-- Live session -->
+        <template if:true={isLive}>
+            <div class="vt-live">
+                <video class={videoClass} autoplay playsinline muted></video>
+                <canvas class="vt-canvas"></canvas>
+
+                <!-- Frozen frame that was analysed, so the pin lands exactly on it -->
+                <template if:true={snapshot.visible}>
+                    <img class={snapshotClass} src={snapshot.src} alt="Marked view" />
+                    <div class="vt-snap-badge" onclick={handleDismissSnapshot}>
+                        📸 Here's what I see — tap to resume
+                    </div>
+                </template>
+
+                <!-- On-screen marker box ("show me the…") -->
+                <template if:true={marker.visible}>
+                    <div class="vt-marker" style={markerStyle}>
+                        <span class="vt-marker-label">{marker.label}</span>
+                    </div>
+                </template>
+
+                <div class="vt-overlay-top">
+                    <button class="vt-back" onclick={handleBack}>&larr; Home</button>
+                    <span class="vt-product">{vehicleLabel}</span>
+                    <template if:true={recording}>
+                        <span class="vt-live-dot" title="Microphone on">
+                            <span class="vt-live-pulse"></span>Rec
+                        </span>
+                    </template>
+                </div>
+
+                <!-- Transparent two-way conversation card -->
+                <div class="vt-overlay-bottom">
+                    <div class="vt-chat">
+                        <template for:each={messages} for:item="m">
+                            <div key={m.id} class={m.cls}>{m.text}</div>
+                        </template>
+                    </div>
+                    <template if:true={status}>
+                        <div class="vt-footer"><span class="vt-status">{status}</span></div>
+                    </template>
+                    <!-- Control bar: agent thinking/speaking indicator + push-to-talk mic -->
+                    <div class="vt-controls">
+                        <div class={agentStateClass}>
+                            <span class="vt-eq"><i></i><i></i><i></i><i></i><i></i></span>
+                            <span class="vt-agentstate-label">{agentStateLabel}</span>
+                        </div>
+                        <button
+                            class={pttClass}
+                            title="Hold to talk"
+                            onpointerdown={startPtt}
+                            onpointerup={stopPtt}
+                            onpointerleave={stopPtt}
+                            onpointercancel={stopPtt}
+                            oncontextmenu={handleBlockContext}
+                        >
+                            <span class="vt-mic-glyph">🎙️</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- Sales specialist (live human) chat over MIAW -->
+        <template if:true={isSpecialist}>
+            <div class="vt-spec">
+                <!-- Camera kept alive but hidden, so the capture button still works -->
+                <video class="vt-hidden-media" autoplay playsinline muted></video>
+                <canvas class="vt-hidden-media"></canvas>
+
+                <div class="vt-spec-header">
+                    <button class="vt-back" onclick={handleBack}>&larr; End chat</button>
+                    <div class="vt-spec-title">
+                        <span class="vt-spec-title-main">Sales Specialist</span>
+                        <template if:true={productName}>
+                            <span class="vt-spec-case">{productName}</span>
+                        </template>
+                    </div>
+                    <template if:true={recording}>
+                        <span class="vt-live-dot" title="Microphone on">
+                            <span class="vt-live-pulse"></span>Rec
+                        </span>
+                    </template>
+                </div>
+
+                <div class="vt-spec-chat">
+                    <template for:each={specMessages} for:item="m">
+                        <div key={m.id} class={m.cls}>{m.text}</div>
+                    </template>
+                    <template if:true={specTyping}>
+                        <div class="vt-msg vt-msg-agent vt-typing">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="vt-spec-status">{specStatus}</div>
+
+                <!-- Control bar: specialist speaking indicator + push-to-talk mic (typing still works below) -->
+                <div class="vt-spec-ptt">
+                    <div class="vt-controls">
+                        <div class={agentStateClass}>
+                            <span class="vt-eq"><i></i><i></i><i></i><i></i><i></i></span>
+                            <span class="vt-agentstate-label">{agentStateLabel}</span>
+                        </div>
+                        <button
+                            class={pttClass}
+                            title="Hold to talk"
+                            onpointerdown={startPtt}
+                            onpointerup={stopPtt}
+                            onpointerleave={stopPtt}
+                            onpointercancel={stopPtt}
+                            oncontextmenu={handleBlockContext}
+                        >
+                            <span class="vt-mic-glyph">🎙️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="vt-spec-input">
+                    <button class="vt-icon-btn" title="Share a photo" onclick={openCapture}>📷</button>
+                    <input
+                        type="text"
+                        class="vt-textbox"
+                        placeholder="Type a message…"
+                        value={textDraft}
+                        onchange={handleTextChange}
+                        oninput={handleTextChange}
+                        onkeyup={handleTextKeyup}
+                    />
+                    <button class="vt-send-btn" title="Send" onclick={handleSend}>Send</button>
+                </div>
+
+                <!-- Photo-capture preview: aim with the live camera, then confirm before sending -->
+                <template if:true={capture.open}>
+                    <div class="vt-cap-overlay">
+                        <div class="vt-cap-head">
+                            <template if:true={captureAiming}>Aim the camera, then tap Capture</template>
+                            <template if:true={captureHasStill}>Send this photo to the specialist?</template>
+                        </div>
+                        <div class="vt-cap-stage">
+                            <template if:true={captureAiming}>
+                                <video class="vt-cap-video" autoplay playsinline muted></video>
+                            </template>
+                            <template if:true={captureHasStill}>
+                                <img class="vt-cap-still" src={capture.still} alt="Photo preview" />
+                            </template>
+                        </div>
+                        <div class="vt-cap-actions">
+                            <template if:true={captureAiming}>
+                                <button class="vt-cap-btn vt-cap-cancel" onclick={cancelCapture}>Cancel</button>
+                                <button class="vt-cap-btn vt-cap-primary" onclick={snapCapture}>📷 Capture</button>
+                            </template>
+                            <template if:true={captureHasStill}>
+                                <button class="vt-cap-btn vt-cap-cancel" onclick={retakeCapture}>Retake</button>
+                                <button class="vt-cap-btn vt-cap-primary" onclick={confirmCapture}>Send photo</button>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

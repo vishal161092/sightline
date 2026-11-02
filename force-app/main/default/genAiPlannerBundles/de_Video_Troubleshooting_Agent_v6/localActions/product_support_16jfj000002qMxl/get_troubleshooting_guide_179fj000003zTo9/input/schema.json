@@ -1,0 +1,21 @@
+{
+  "required" : [ "productName" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "productIssue" : {
+      "title" : "Product Issue",
+      "description" : "The specific problem, symptom, or error code the user reported or that is visible on the product (e.g. 'error code E1', 'not heating'). Leave blank if not yet known.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "productName" : {
+      "title" : "Product Name",
+      "description" : "The name of the product to fetch the troubleshooting guide for.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

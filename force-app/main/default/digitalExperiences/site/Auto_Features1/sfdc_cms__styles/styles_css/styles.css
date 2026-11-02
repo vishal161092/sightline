@@ -1,0 +1,92 @@
+/*
+ * Auto Features — full-black, edge-to-edge, mobile-first.
+ * The de_autoFeatures LWC is a self-contained dark, full-viewport app (native
+ * shadow DOM, so its internals are isolated from this global CSS). We strip the
+ * LWR theme chrome — white page background, side gutters, header, footer — so
+ * only the component shows on a pure-black canvas.
+ */
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #000 !important;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+}
+
+/* The de_autoFeatures app is a fixed, full-viewport screen that scrolls
+   internally, so the outer LWR page must NOT scroll — otherwise the (white)
+   page/footer behind the app drags into view. Pinning the body is the reliable
+   cross-browser lock (iOS Safari ignores overflow:hidden on <body>). */
+body {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+    background: #000 !important;
+}
+
+/* Also stop any LWR scroll container behind the app from scrolling / showing
+   white. These are the app-shell wrappers that sit under the component. */
+#webruntime,
+.webruntime-app,
+[class*="siteforceContentArea"],
+[class*="contentRegion"],
+[class*="mainContentArea"] {
+    overflow: hidden !important;
+    background-color: #000 !important;
+}
+
+/* Paint every structural LWR wrapper black so no white shows through — behind
+   the centered app column, above/below it, or during load. Safe: the component
+   renders inside its own (native) shadow root and is untouched by these rules. */
+body,
+body div,
+body main,
+body section,
+.themeLayout,
+.themeLayout > *,
+[class*="siteforceContentArea"],
+[class*="dxp-"],
+[class*="ccontent"],
+[class*="Content"],
+.slds-scope {
+    background-color: #000 !important;
+}
+
+/* Collapse + hide the (empty) theme header and footer — this is the white strip
+   at the very top and any footer band. Landmark elements are light-DOM theme
+   chrome only (the component uses no <header>/<footer> landmarks). */
+body > header,
+body header,
+body > footer,
+body footer,
+[role="banner"],
+[role="contentinfo"],
+.themeLayout > .header,
+.themeLayout > .footer {
+    display: none !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    background-color: #000 !important;
+}
+
+/* Remove the max-content-width cap and default padding so the app is truly
+   edge-to-edge (the component caps + centers itself at 720px on black). */
+[class*="contentRegion"],
+[class*="mainContentArea"],
+.slds-container_center,
+.slds-container_medium,
+.slds-container_large,
+.slds-container_x-large,
+.slds-container_fluid {
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}

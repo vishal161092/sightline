@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Server-side integration settings for Sightline (Agent API connected app, Google service account). Protected: readable only by Apex in this org. Never commit real values.</description>
+    <label>Sightline Config</label>
+    <pluralLabel>Sightline Configs</pluralLabel>
+    <visibility>Protected</visibility>
+</CustomObject>
